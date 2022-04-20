@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import ListGroup from 'react-bootstrap/ListGroup';
 
-const JobApplications = () => {
+const JobApplicationList = () => {
 	const [showDetails, setShowDetails] = useState(false);
 	return (
 		<ListGroup>
@@ -12,4 +12,4 @@ const JobApplications = () => {
 	);
 };
 
-export default JobApplications;
+export default JobApplicationList;
