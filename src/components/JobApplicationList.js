@@ -1,35 +1,43 @@
 import { useState } from 'react';
-import axios from 'axios';
 import { useAuth0 } from '@auth0/auth0-react';
-import JobApplication from './JobApplication';
+import JobApplicationForm from './JobApplicationForm.js';
 import ListGroup from 'react-bootstrap/ListGroup';
+import Button from 'react-bootstrap/Button';
+import Stack from 'react-bootstrap/Stack';
 
 const JobApplicationList = () => {
 	const [showDetails, setShowDetails] = useState(false);
+	const [showForm, setShowForm] = useState(false);
+
 	const handleShowDetails = () => setShowDetails(true);
 	const handleHideDetails = () => setShowDetails(false);
+
+	const handleShowForm = () => setShowForm(true);
+	const handleHideForm = () => setShowForm(false);
+
 	const { getAccessTokenSilently } = useAuth0();
 
-	const test = async () => {
-		const token = await getAccessTokenSilently();
-		console.log(token);
-		await axios
-			.get(process.env.REACT_APP_SERVER_URL, {
-				headers: {
-					Authorization: `Bearer ${token}`,
-				},
-			})
-			.then((response) => console.log(response))
-			.catch((error) => console.log(error));
-	};
+	// const token = await getAccessTokenSilently();
+	// TODO: get user from auth0 on component mount and create user in database
+
 	return (
 		<ListGroup>
-			<ListGroup.Item onClick={handleShowDetails}>Job 1</ListGroup.Item>
-			<JobApplication
-				showDetails={showDetails}
-				handleHideDetails={handleHideDetails}
-			/>
-			<ListGroup.Item onClick={test}>Test</ListGroup.Item>
+			<Stack gap={3}>
+				<Button size='lg' onClick={handleShowForm}>
+					Add New Application
+				</Button>
+				<JobApplicationForm
+					showForm={showForm}
+					handleHideForm={handleHideForm}
+				/>
+				{/* <ListGroup.Item onClick={handleShowDetails}>
+					Job 1
+				</ListGroup.Item> */}
+				{/* <JobApplication
+					showDetails={showDetails}
+					handleHideDetails={handleHideDetails}
+				/> */}
+			</Stack>
 		</ListGroup>
 	);
 };

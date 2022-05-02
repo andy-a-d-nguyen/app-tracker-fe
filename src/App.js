@@ -11,10 +11,7 @@ function App() {
 			<NavBar />
 			<Container>
 				<Routes>
-					<Route
-						path='/applications'
-						element={<JobApplicationList />}
-					/>
+					<Route path='/' element={<JobApplicationList />} />
 					<Route path='/about' element={<About />} />
 				</Routes>
 			</Container>

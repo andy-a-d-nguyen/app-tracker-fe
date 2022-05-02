@@ -10,7 +10,7 @@ const NavBar = () => {
 		<Navbar>
 			<Container>
 				<Nav>
-					<Link to='/applications'>Your Job Applications</Link>
+					<Link to='/'>Your Job Applications</Link>
 					<Link to='/about'>About</Link>
 					<AuthenticationButton />
 				</Nav>
