@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
+import axios from 'axios';
 import Modal from 'react-bootstrap/Modal';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
@@ -7,10 +8,19 @@ import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 
 const JobApplicationForm = (props) => {
-	const [job, setJob] = useState({});
+	const [job, setJob] = useState({
+		jobPostingURL: '',
+		jobTitle: '',
+		jobLocation: '',
+		notes: '',
+		applied: false,
+		interviewed: false,
+		offered: false,
+		offerAccepted: false,
+		noResponse: false,
+		rejected: false,
+	});
 	const { getAccessTokenSilently } = useAuth0();
-	// const token = await getAccessTokenSilently();
-	// TODO: use token to create job for user
 
 	const handleFormInput = (event) => {
 		setJob({ ...job, [event.target.name]: event.target.value });
@@ -18,6 +28,33 @@ const JobApplicationForm = (props) => {
 
 	const handleCheckbox = (event) => {
 		setJob({ ...job, [event.target.name]: event.target.checked });
+	};
+
+	const saveApplication = async () => {
+		const token = await getAccessTokenSilently();
+		const requestConfig = {
+			url: `${process.env.REACT_APP_SERVER_URL}/user/${props.userFromDB.username}/jobs`,
+			method: 'post',
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+			data: {
+				job,
+			},
+		};
+		axios
+			.request(requestConfig)
+			.then((response) => {
+				props.setUserFromDB({
+					...props.userFromDB,
+					jobsApplied: JSON.parse(
+						JSON.stringify(response.data.jobsApplied)
+					),
+				});
+			})
+			.catch((error) => {
+				console.log('error: ' + error);
+			});
 	};
 
 	return (
@@ -33,7 +70,9 @@ const JobApplicationForm = (props) => {
 						/>
 					</Col>
 					<Col>
-						<Button variant='primary'>Submit</Button>
+						<Button variant='primary' onClick={saveApplication}>
+							Submit
+						</Button>
 					</Col>
 				</Card.Header>
 				<Card.Body>

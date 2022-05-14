@@ -2,67 +2,49 @@ import { useState, useEffect } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import axios from 'axios';
 import JobApplicationForm from './JobApplicationForm.js';
+import JobApplication from './JobApplication.js';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Button from 'react-bootstrap/Button';
 import Stack from 'react-bootstrap/Stack';
 
 const JobApplicationList = () => {
-	const [username, setUsername] = useState('');
-	const [userFromDB, setUserFromDB] = useState({});
-	const [showDetails, setShowDetails] = useState(false);
-	const [showForm, setShowForm] = useState(false);
+	const { getAccessTokenSilently, user } = useAuth0();
+	const [username, setUsername] = useState(user.email);
 
-	const handleShowDetails = () => setShowDetails(true);
-	const handleHideDetails = () => setShowDetails(false);
+	const [userFromDB, setUserFromDB] = useState({});
+	const [showForm, setShowForm] = useState(false);
 
 	const handleShowForm = () => setShowForm(true);
 	const handleHideForm = () => setShowForm(false);
 
-	const { getAccessTokenSilently, user } = useAuth0();
-
-	const getOrCreateUser = async (token) => {
-		await axios
-			.get(`http://localhost:3001/user/${username}`, {
-				headers: {
-					Authorization: `Bearer ${token}`,
-				},
-			})
-			.then((response) =>
+	const getOrCreateUser = async () => {
+		const token = await getAccessTokenSilently();
+		const requestConfig = {
+			url: `${process.env.REACT_APP_SERVER_URL}/user`,
+			method: 'post',
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+			data: {
+				username,
+			},
+		};
+		axios
+			.request(requestConfig)
+			.then((response) => {
 				setUserFromDB({
 					username: response.data.username,
 					jobsApplied: response.data.jobsApplied,
-				})
-			)
-			.catch(async (error) => {
-				if (error.response.status === 404) {
-					await axios
-						.post(
-							'http://localhost:3001/user',
-							{ username: username },
-							{
-								headers: {
-									Authorization: `Bearer ${token}`,
-								},
-							}
-						)
-						.then((res) =>
-							setUserFromDB({
-								username: res.data.username,
-								jobsApplied: res.data.jobsApplied,
-							})
-						);
-				}
+				});
+			})
+			.catch((err) => {
+				console.log('error: ' + err);
 			});
 	};
 
 	useEffect(() => {
-		const retrieveUser = async () => {
-			const token = await getAccessTokenSilently();
-			setUsername(user.email);
-			await getOrCreateUser(token);
-		};
-		retrieveUser();
-	}, [username]);
+		getOrCreateUser();
+	}, [username, userFromDB]);
 
 	return (
 		<ListGroup>
@@ -76,13 +58,10 @@ const JobApplicationList = () => {
 					userFromDB={userFromDB}
 					setUserFromDB={setUserFromDB}
 				/>
-				{/* <ListGroup.Item onClick={handleShowDetails}>
-					Job 1
-				</ListGroup.Item> */}
-				{/* <JobApplication
-					showDetails={showDetails}
-					handleHideDetails={handleHideDetails}
-				/> */}
+				{Object.keys(userFromDB).length > 0 &&
+					userFromDB.jobsApplied.map((job, index) => {
+						return <JobApplication />;
+					})}
 			</Stack>
 		</ListGroup>
 	);

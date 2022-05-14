@@ -9,13 +9,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-	<React.StrictMode>
-		<BrowserRouter>
-			<Auth0ProviderWithHistory>
-				<App />
-			</Auth0ProviderWithHistory>
-		</BrowserRouter>
-	</React.StrictMode>
+	<BrowserRouter>
+		<Auth0ProviderWithHistory>
+			<App />
+		</Auth0ProviderWithHistory>
+	</BrowserRouter>
 );
 
 // If you want to start measuring performance in your app, pass a function
