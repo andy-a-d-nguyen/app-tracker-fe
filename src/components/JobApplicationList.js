@@ -6,6 +6,8 @@ import JobApplication from './JobApplication.js';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Button from 'react-bootstrap/Button';
 import Stack from 'react-bootstrap/Stack';
+import Accordion from 'react-bootstrap/Accordion'
+
 
 const JobApplicationList = () => {
 	const { getAccessTokenSilently, user } = useAuth0();
@@ -58,10 +60,13 @@ const JobApplicationList = () => {
 					userFromDB={userFromDB}
 					setUserFromDB={setUserFromDB}
 				/>
-				{Object.keys(userFromDB).length > 0 &&
-					userFromDB.jobsApplied.map((job, index) => {
-						return <JobApplication />;
-					})}
+				<Accordion>
+					{Object.keys(userFromDB).length > 0 &&
+						userFromDB.jobsApplied.map((job, index) => {
+							return <JobApplication key={index} index={index}/>;
+						})
+					}
+				</Accordion>
 			</Stack>
 		</ListGroup>
 	);
