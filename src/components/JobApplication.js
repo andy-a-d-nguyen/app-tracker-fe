@@ -89,6 +89,7 @@ const JobApplication = ( props ) => {
 				userFromDB={props.userFromDB}
 				setUserFromDB={ props.setUserFromDB }
 				jobApplied={ props.jobApplied }
+				index={ props.index }
 			/>
 		</>
 	);
