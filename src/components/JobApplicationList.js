@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import axios from 'axios';
-import JobApplicationForm from './JobApplicationForm.js';
+import SubmitJobApplicationForm from './SubmitJobApplicationForm.js';
 import JobApplication from './JobApplication.js';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Button from 'react-bootstrap/Button';
@@ -54,7 +54,7 @@ const JobApplicationList = () => {
 				<Button size='lg' onClick={handleShowForm}>
 					Add New Application
 				</Button>
-				<JobApplicationForm
+				<SubmitJobApplicationForm
 					showForm={showForm}
 					handleHideForm={handleHideForm}
 					userFromDB={userFromDB}
@@ -62,8 +62,16 @@ const JobApplicationList = () => {
 				/>
 				<Accordion>
 					{Object.keys(userFromDB).length > 0 &&
-						userFromDB.jobsApplied.map((job, index) => {
-							return <JobApplication key={index} index={index}/>;
+						userFromDB.jobsApplied.map((jobApplied, index) => {
+							return (
+								<JobApplication
+									key={ index }
+									index={ index }
+									jobApplied={ jobApplied }
+									userFromDB={userFromDB}
+									setUserFromDB={setUserFromDB}
+								/>
+							);
 						})
 					}
 				</Accordion>
