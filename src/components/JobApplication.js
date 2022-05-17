@@ -1,16 +1,46 @@
-import {useState} from 'react'
+import { useState } from 'react'
+import {useAuth0} from '@auth0/auth0-react';
 import Accordion from 'react-bootstrap/Accordion';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import EditJobApplicationForm from './EditJobApplicationForm.js';
+import axios from 'axios';
 
 const JobApplication = ( props ) => {
+	const { getAccessTokenSilently } = useAuth0();
+
 	const [showForm, setShowForm] = useState(false);
 
 	const handleShowForm = () => setShowForm(true);
 	const handleHideForm = () => setShowForm( false );
+
+	const deleteJobApplication = async () => {
+		const token = await getAccessTokenSilently()
+		const requestConfig = {
+			url: `${ process.env.REACT_APP_SERVER_URL }/user/${ props.userFromDB.username }/jobs/${ props.index }`,
+			method: 'delete',
+			headers: {
+				Authorization: `Bearer ${ token }`,
+			}
+		}
+		axios
+			.request( requestConfig )
+			.then( ( response ) => {
+				props.setUserFromDB( {
+					username: JSON.parse(
+						JSON.stringify( response.data.username )
+					),
+					jobsApplied: JSON.parse(
+						JSON.stringify(response.data.jobsApplied)
+					),
+				})
+			} )
+			.catch( ( error ) => {
+				console.log("error: " + error)
+			})
+	}
 
 	return (
 		<>
@@ -27,6 +57,11 @@ const JobApplication = ( props ) => {
 							<Col>
 								<Button variant='primary' onClick={handleShowForm}>
 									Edit
+								</Button>
+							</Col>
+							<Col>
+								<Button variant='primary' onClick={deleteJobApplication}>
+									Delete
 								</Button>
 							</Col>
 						</Card.Header>
