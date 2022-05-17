@@ -6,7 +6,7 @@ import Container from 'react-bootstrap/Container';
 import NavBar from './components/NavBar.js';
 import LoadingOverlay from 'react-loading-overlay-ts';
 import JobApplicationList from './components/JobApplicationList.js';
-import About from './components/About.js';
+import Settings from './components/Settings.js';
 import ProtectedRoute from './components/ProtectedRoute.js';
 import Home from './components/Home.js';
 import './App.css';
@@ -26,7 +26,7 @@ const App = () => {
 					/>
 					<Route
 						path='/about'
-						element={<ProtectedRoute component={About} />}
+						element={<ProtectedRoute component={Settings} />}
 					/>
 				</Routes>
 			</Container>
