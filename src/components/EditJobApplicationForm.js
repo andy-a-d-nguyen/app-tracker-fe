@@ -19,7 +19,7 @@ const EditJobApplicationForm = (props) => {
 		offerAccepted: props.jobApplied.offerAccepted,
 		noResponse: props.jobApplied.noResponse,
 		rejected: props.jobApplied.rejected,
-	} );
+	});
 
 	const { getAccessTokenSilently } = useAuth0();
 
