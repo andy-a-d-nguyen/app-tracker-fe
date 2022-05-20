@@ -11,10 +11,10 @@ const NavBar = () => {
 	const { isAuthenticated } = useAuth0();
 
 	return (
-		<Navbar className='navbar'>
+		<Navbar className='bg-dark'>
 			<Container>
 				{isAuthenticated ? (
-					<Nav variant='tabs'>
+					<Nav variant='pills'>
 						<Nav.Link>
 							<Link to='/'>Home</Link>
 						</Nav.Link>
@@ -24,12 +24,15 @@ const NavBar = () => {
 							</Link>
 						</Nav.Link>
 						<Nav.Link>
-							<Link to='/about'>About</Link>
+							<Link to='/settings'>Settings</Link>
+						</Nav.Link>
+						<Nav.Link>
+							<Link to='/about'>About Us</Link>
 						</Nav.Link>
 						<LogoutButton />
 					</Nav>
 				) : (
-					<Nav variant='tabs'>
+					<Nav variant='pills'>
 						<Nav.Link>
 							<Link to='/'>Home</Link>
 						</Nav.Link>

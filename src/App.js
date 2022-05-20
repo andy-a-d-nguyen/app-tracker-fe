@@ -5,6 +5,7 @@ import NavBar from './components/NavBar.js';
 import Stack from 'react-bootstrap/Stack';
 import JobApplicationList from './components/JobApplicationList.js';
 import Settings from './components/Settings.js';
+import AboutUs from './components/AboutUs.js';
 import ProtectedRoute from './components/ProtectedRoute.js';
 import Home from './components/Home.js';
 import './App.css';
@@ -26,8 +27,12 @@ const App = () => {
 							}
 						/>
 						<Route
-							path='/about'
+							path='/settings'
 							element={<ProtectedRoute component={Settings} />}
+						/>
+						<Route
+							path='/about'
+							element={<ProtectedRoute component={AboutUs} />}
 						/>
 					</Routes>
 				</Container>
