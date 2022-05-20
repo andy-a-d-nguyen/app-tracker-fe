@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import axios from 'axios';
 import Card from 'react-bootstrap/Card';
@@ -21,7 +21,6 @@ const AboutUs = () => {
 		axios
 			.request(requestConfig)
 			.then((response) => {
-				console.log('response: ' + JSON.stringify(response.data.value));
 				setChuckNorrisFact(JSON.stringify(response.data.value));
 			})
 			.catch((error) => {
@@ -31,21 +30,13 @@ const AboutUs = () => {
 
 	return (
 		<>
-			<Card>
-				<Card.Body>
-					<Card.Title>This is a job application tracker</Card.Title>
-				</Card.Body>
-			</Card>
-			<Card>
-				{chuckNorrisFact.length > 0 ? (
-					<Card.Body>
-						<Card.Title>{chuckNorrisFact}</Card.Title>
-					</Card.Body>
-				) : null}
-				<Button variant='primary' onClick={getChuckNorrisFact}>
-					Click for a Random Chuck Norris fact
-				</Button>
-			</Card>
+			<h3>
+				This web app uses MongoDB, Mongoose, Node.JS, Express, and React
+			</h3>
+			{chuckNorrisFact.length > 0 ? <p>{chuckNorrisFact}</p> : null}
+			<Button variant='primary' onClick={getChuckNorrisFact}>
+				Click for a Random Chuck Norris fact
+			</Button>
 		</>
 	);
 };

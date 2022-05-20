@@ -32,8 +32,8 @@ const Settings = () => {
 	return (
 		<Card>
 			<Card.Body>
-				<Card.Title>{name}</Card.Title>
-				<Card.Title>{email}</Card.Title>
+				<Card.Title>Name: {name}</Card.Title>
+				<Card.Title>Email: {email}</Card.Title>
 				<Button variant='primary' onClick={deleteAccount}>
 					Delete Account
 				</Button>

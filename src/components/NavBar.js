@@ -11,7 +11,7 @@ const NavBar = () => {
 	const { isAuthenticated } = useAuth0();
 
 	return (
-		<Navbar className='bg-dark'>
+		<Navbar className='bg-info'>
 			<Container>
 				{isAuthenticated ? (
 					<Nav variant='pills'>
