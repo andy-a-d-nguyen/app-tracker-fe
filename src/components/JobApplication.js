@@ -4,13 +4,17 @@ import Accordion from 'react-bootstrap/Accordion';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
+import Alert from 'react-bootstrap/Alert';
 import EditJobApplicationForm from './EditJobApplicationForm.js';
 import axios from 'axios';
 
 const JobApplication = (props) => {
 	const { getAccessTokenSilently } = useAuth0();
 
+	const [errorResponse, setErrorResponse] = useState('');
+	const [alert, setAlert] = useState(false);
 	const [showForm, setShowForm] = useState(false);
 
 	const handleShowForm = () => setShowForm(true);
@@ -38,7 +42,8 @@ const JobApplication = (props) => {
 				});
 			})
 			.catch((error) => {
-				console.log('error: ' + error);
+				setAlert(true);
+				setErrorResponse(error);
 			});
 	};
 
@@ -48,26 +53,37 @@ const JobApplication = (props) => {
 				<Accordion.Header>{props.jobApplied.jobTitle}</Accordion.Header>
 				<Accordion.Body>
 					<Card className='accordion-body'>
-						<Card.Header className='row justify-content-between'>
-							<Col>
-								<Card.Title>
-									{props.jobApplied.jobTitle}
-								</Card.Title>
-							</Col>
-							<Col>
-								<Button
-									variant='primary'
-									onClick={handleShowForm}>
-									Edit
-								</Button>
-							</Col>
-							<Col>
-								<Button
-									variant='primary'
-									onClick={deleteJobApplication}>
-									Delete
-								</Button>
-							</Col>
+						<Card.Header className='justify-content-between'>
+							<Row>
+								<Col>
+									<Card.Title>
+										{props.jobApplied.jobTitle}
+									</Card.Title>
+								</Col>
+								<Col md='auto'>
+									<Button
+										variant='primary'
+										onClick={handleShowForm}>
+										Edit
+									</Button>
+								</Col>
+								<Col md='auto'>
+									<Button
+										variant='primary'
+										onClick={deleteJobApplication}>
+										Delete
+									</Button>
+								</Col>
+							</Row>
+							{errorResponse.length > 0 ? (
+								<Alert
+									onClose={() => setAlert(false)}
+									dismissible>
+									<Alert.Heading>
+										{errorResponse}
+									</Alert.Heading>
+								</Alert>
+							) : null}
 						</Card.Header>
 						<Card.Body>
 							<Card.Link>

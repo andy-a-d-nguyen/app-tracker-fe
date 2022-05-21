@@ -7,12 +7,16 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import Button from 'react-bootstrap/Button';
 import Stack from 'react-bootstrap/Stack';
 import Accordion from 'react-bootstrap/Accordion';
+import Alert from 'react-bootstrap/Alert';
 
 const JobApplicationList = () => {
 	const { getAccessTokenSilently, user } = useAuth0();
-	const [username, setUsername] = useState(user.email);
 
+	const [username, setUsername] = useState(user.email);
 	const [userFromDB, setUserFromDB] = useState({});
+	const [errorResponse, setErrorResponse] = useState('');
+
+	const [alert, setAlert] = useState(false);
 	const [showForm, setShowForm] = useState(false);
 
 	const handleShowForm = () => setShowForm(true);
@@ -38,8 +42,9 @@ const JobApplicationList = () => {
 					jobsApplied: response.data.jobsApplied,
 				});
 			})
-			.catch((err) => {
-				console.log('error: ' + err);
+			.catch((error) => {
+				setAlert(true);
+				setErrorResponse(error);
 			});
 	};
 
@@ -47,35 +52,43 @@ const JobApplicationList = () => {
 		getOrCreateUser();
 	}, [username, userFromDB]);
 
-	return (
-		<ListGroup>
-			<Stack gap={3}>
-				<Button size='lg' onClick={handleShowForm}>
-					Add New Application
-				</Button>
-				<SubmitJobApplicationForm
-					showForm={showForm}
-					handleHideForm={handleHideForm}
-					userFromDB={userFromDB}
-					setUserFromDB={setUserFromDB}
-				/>
-				<Accordion>
-					{Object.keys(userFromDB).length > 0 &&
-						userFromDB.jobsApplied.map((jobApplied, index) => {
-							return (
-								<JobApplication
-									key={index}
-									index={index}
-									jobApplied={jobApplied}
-									userFromDB={userFromDB}
-									setUserFromDB={setUserFromDB}
-								/>
-							);
-						})}
-				</Accordion>
-			</Stack>
-		</ListGroup>
-	);
+	if (errorResponse.length > 0) {
+		return (
+			<Alert onClose={() => setAlert(false)} dismissible>
+				<Alert.Heading>{errorResponse}</Alert.Heading>
+			</Alert>
+		);
+	} else {
+		return (
+			<ListGroup>
+				<Stack gap={3}>
+					<Button size='lg' onClick={handleShowForm}>
+						Add New Application
+					</Button>
+					<SubmitJobApplicationForm
+						showForm={showForm}
+						handleHideForm={handleHideForm}
+						userFromDB={userFromDB}
+						setUserFromDB={setUserFromDB}
+					/>
+					<Accordion>
+						{Object.keys(userFromDB).length > 0 &&
+							userFromDB.jobsApplied.map((jobApplied, index) => {
+								return (
+									<JobApplication
+										key={index}
+										index={index}
+										jobApplied={jobApplied}
+										userFromDB={userFromDB}
+										setUserFromDB={setUserFromDB}
+									/>
+								);
+							})}
+					</Accordion>
+				</Stack>
+			</ListGroup>
+		);
+	}
 };
 
 export default JobApplicationList;

@@ -6,6 +6,8 @@ import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
+import Alert from 'react-bootstrap/Alert';
 
 const SubmitJobApplicationForm = (props) => {
 	const [job, setJob] = useState({
@@ -20,6 +22,9 @@ const SubmitJobApplicationForm = (props) => {
 		noResponse: false,
 		rejected: false,
 	});
+	const [errorResponse, setErrorResponse] = useState('');
+	const [alert, setAlert] = useState(false);
+
 	const { getAccessTokenSilently } = useAuth0();
 
 	const handleFormInput = (event) => {
@@ -53,7 +58,8 @@ const SubmitJobApplicationForm = (props) => {
 				});
 			})
 			.catch((error) => {
-				console.log('error: ' + error);
+				setAlert(true);
+				setErrorResponse(error);
 			});
 	};
 
@@ -61,19 +67,26 @@ const SubmitJobApplicationForm = (props) => {
 		<Modal show={props.showForm} onHide={props.handleHideForm}>
 			<Card>
 				<Card.Header className='row justify-content-between'>
-					<Col>
-						<Form.Label>Job Title:</Form.Label>
-						<Form.Control
-							type='text'
-							name='jobTitle'
-							onChange={handleFormInput}
-						/>
-					</Col>
-					<Col>
-						<Button variant='primary' onClick={saveApplication}>
-							Submit
-						</Button>
-					</Col>
+					<Row>
+						<Col>
+							<Form.Label>Job Title:</Form.Label>
+							<Form.Control
+								type='text'
+								name='jobTitle'
+								onChange={handleFormInput}
+							/>
+						</Col>
+						<Col md='auto'>
+							<Button variant='primary' onClick={saveApplication}>
+								Submit
+							</Button>
+						</Col>
+					</Row>
+					{errorResponse.length > 0 ? (
+						<Alert onClose={() => setAlert(false)} dismissible>
+							<Alert.Heading>{errorResponse}</Alert.Heading>
+						</Alert>
+					) : null}
 				</Card.Header>
 				<Card.Body>
 					<Form.Label>Job Posting URL:</Form.Label>
