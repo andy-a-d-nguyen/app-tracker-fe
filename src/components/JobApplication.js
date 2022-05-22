@@ -75,7 +75,7 @@ const JobApplication = (props) => {
 									</Button>
 								</Col>
 							</Row>
-							{alert ?? (
+							{alert && (
 								<Alert
 									onClose={() => setAlert(false)}
 									dismissible>
@@ -89,6 +89,7 @@ const JobApplication = (props) => {
 							<Card.Link>
 								{props.jobApplied.jobPostingURL}
 							</Card.Link>
+							<Card.Text>{props.jobApplied.location}</Card.Text>
 							<Card.Text>{props.jobApplied.notes}</Card.Text>
 							<Card.Footer>
 								<Form>

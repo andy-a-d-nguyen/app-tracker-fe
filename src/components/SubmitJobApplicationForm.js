@@ -10,6 +10,8 @@ import Row from 'react-bootstrap/Row';
 import Alert from 'react-bootstrap/Alert';
 
 const SubmitJobApplicationForm = (props) => {
+	const { getAccessTokenSilently } = useAuth0();
+
 	const [job, setJob] = useState({
 		jobPostingURL: '',
 		jobTitle: '',
@@ -24,10 +26,12 @@ const SubmitJobApplicationForm = (props) => {
 	});
 	const [errorResponse, setErrorResponse] = useState('');
 	const [alert, setAlert] = useState(false);
-
-	const { getAccessTokenSilently } = useAuth0();
+	const [validated, setValidated] = useState(false);
 
 	const handleFormInput = (event) => {
+		if (job.jobTitle.length > 0 && job.jobLocation.length > 0) {
+			setValidated(true);
+		}
 		setJob({ ...job, [event.target.name]: event.target.value });
 	};
 
@@ -35,7 +39,8 @@ const SubmitJobApplicationForm = (props) => {
 		setJob({ ...job, [event.target.name]: event.target.checked });
 	};
 
-	const saveApplication = async () => {
+	const saveApplication = async (event) => {
+		event.preventDefault();
 		const token = await getAccessTokenSilently();
 		const requestConfig = {
 			url: `${process.env.REACT_APP_SERVER_URL}/user/${props.userFromDB.username}/jobs`,
@@ -56,6 +61,19 @@ const SubmitJobApplicationForm = (props) => {
 						JSON.stringify(response.data.jobsApplied)
 					),
 				});
+				setJob({
+					jobPostingURL: '',
+					jobTitle: '',
+					jobLocation: '',
+					notes: '',
+					applied: false,
+					interviewed: false,
+					offered: false,
+					offerAccepted: false,
+					noResponse: false,
+					rejected: false,
+				});
+				setValidated(false);
 			})
 			.catch((error) => {
 				setAlert(true);
@@ -67,22 +85,33 @@ const SubmitJobApplicationForm = (props) => {
 		<Modal show={props.showForm} onHide={props.handleHideForm}>
 			<Card>
 				<Card.Header className='row justify-content-between'>
-					<Row>
-						<Col>
-							<Form.Label>Job Title:</Form.Label>
-							<Form.Control
-								type='text'
-								name='jobTitle'
-								onChange={handleFormInput}
-							/>
-						</Col>
-						<Col md='auto'>
-							<Button variant='primary' onClick={saveApplication}>
-								Submit
-							</Button>
-						</Col>
-					</Row>
-					{alert ?? (
+					<Form>
+						<Row>
+							<Form.Group as={Col}>
+								<Form.Label>Job Title:</Form.Label>
+								<Form.Control
+									type='text'
+									name='jobTitle'
+									onChange={handleFormInput}
+								/>
+								{validated === false ? (
+									<span className='text-danger'>
+										Required
+									</span>
+								) : null}
+							</Form.Group>
+							<Col md='auto'>
+								<Button
+									type='submit'
+									variant='primary'
+									disabled={!validated}
+									onClick={(event) => saveApplication(event)}>
+									Submit
+								</Button>
+							</Col>
+						</Row>
+					</Form>
+					{alert && (
 						<Alert onClose={() => setAlert(false)} dismissible>
 							<Alert.Heading>{errorResponse}</Alert.Heading>
 						</Alert>
@@ -95,12 +124,18 @@ const SubmitJobApplicationForm = (props) => {
 						name='jobPostingURL'
 						onChange={handleFormInput}
 					/>
-					<Form.Label>Location:</Form.Label>
-					<Form.Control
-						type='text'
-						name='jobLocation'
-						onChange={handleFormInput}
-					/>
+					<Form.Group>
+						<Form.Label>Location:</Form.Label>
+						<Form.Control
+							type='text'
+							name='jobLocation'
+							onChange={handleFormInput}
+							minLength='1'
+						/>
+						{validated === false ? (
+							<span className='text-danger'>Required</span>
+						) : null}
+					</Form.Group>
 					<Form.Label>Notes:</Form.Label>
 					<Form.Control
 						type='text'

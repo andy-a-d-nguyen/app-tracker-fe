@@ -42,7 +42,7 @@ const Settings = () => {
 				<Button variant='primary' onClick={deleteAccount}>
 					Delete Account
 				</Button>
-				{alert ?? (
+				{alert && (
 					<Alert onClose={() => setAlert(false)} dismissible>
 						<Alert.Heading>{errorResponse}</Alert.Heading>
 					</Alert>

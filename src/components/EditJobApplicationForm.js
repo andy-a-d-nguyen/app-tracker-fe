@@ -83,7 +83,7 @@ const EditJobApplicationForm = (props) => {
 							</Button>
 						</Col>
 					</Row>
-					{alert ?? (
+					{alert && (
 						<Alert onClose={() => setAlert(false)} dismissible>
 							<Alert.Heading>{errorResponse}</Alert.Heading>
 						</Alert>
@@ -95,6 +95,13 @@ const EditJobApplicationForm = (props) => {
 						type='url'
 						name='jobPostingURL'
 						placeholder={props.jobApplied.jobPostingURL}
+						onChange={handleFormInput}
+					/>
+					<Form.Label>Location:</Form.Label>
+					<Form.Control
+						type='text'
+						name='location'
+						placeholder={props.jobApplied.jobLocation}
 						onChange={handleFormInput}
 					/>
 					<Form.Label>Notes:</Form.Label>
