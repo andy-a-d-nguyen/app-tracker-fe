@@ -75,7 +75,7 @@ const JobApplication = (props) => {
 									</Button>
 								</Col>
 							</Row>
-							{errorResponse.length > 0 ? (
+							{alert ?? (
 								<Alert
 									onClose={() => setAlert(false)}
 									dismissible>
@@ -83,7 +83,7 @@ const JobApplication = (props) => {
 										{errorResponse}
 									</Alert.Heading>
 								</Alert>
-							) : null}
+							)}
 						</Card.Header>
 						<Card.Body>
 							<Card.Link>

@@ -38,7 +38,7 @@ const AboutUs = () => {
 			<h3>
 				This web app uses MongoDB, Mongoose, Node.JS, Express, and React
 			</h3>
-			{errorResponse.length > 0 ? (
+			{alert ? (
 				<Alert onClose={() => setAlert(false)} dismissible>
 					<Alert.Heading>{errorResponse}</Alert.Heading>
 				</Alert>

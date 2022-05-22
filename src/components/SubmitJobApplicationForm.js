@@ -82,11 +82,11 @@ const SubmitJobApplicationForm = (props) => {
 							</Button>
 						</Col>
 					</Row>
-					{errorResponse.length > 0 ? (
+					{alert ?? (
 						<Alert onClose={() => setAlert(false)} dismissible>
 							<Alert.Heading>{errorResponse}</Alert.Heading>
 						</Alert>
-					) : null}
+					)}
 				</Card.Header>
 				<Card.Body>
 					<Form.Label>Job Posting URL:</Form.Label>

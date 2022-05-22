@@ -42,11 +42,11 @@ const Settings = () => {
 				<Button variant='primary' onClick={deleteAccount}>
 					Delete Account
 				</Button>
-				{errorResponse.length > 0 ? (
+				{alert ?? (
 					<Alert onClose={() => setAlert(false)} dismissible>
 						<Alert.Heading>{errorResponse}</Alert.Heading>
 					</Alert>
-				) : null}
+				)}
 			</Card.Body>
 		</Card>
 	);

@@ -52,7 +52,7 @@ const JobApplicationList = () => {
 		getOrCreateUser();
 	}, [username, userFromDB]);
 
-	if (errorResponse.length > 0) {
+	if (alert) {
 		return (
 			<Alert onClose={() => setAlert(false)} dismissible>
 				<Alert.Heading>{errorResponse}</Alert.Heading>
