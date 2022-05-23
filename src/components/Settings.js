@@ -18,7 +18,7 @@ const Settings = () => {
 			url: `${process.env.REACT_APP_SERVER_URL}/user/${email}`,
 			method: 'delete',
 			headers: {
-				'Access-Control-Allow-Origin': '*',
+				'Access-Control-Allow-Origin': `${process.env.FRONTEND_URL}`,
 				Authorization: `Bearer ${token}`,
 			},
 		};

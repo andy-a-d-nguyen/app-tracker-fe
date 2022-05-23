@@ -26,7 +26,7 @@ const JobApplication = (props) => {
 			url: `${process.env.REACT_APP_SERVER_URL}/user/${props.userFromDB.username}/jobs/${props.index}`,
 			method: 'delete',
 			headers: {
-				'Access-Control-Allow-Origin': '*',
+				'Access-Control-Allow-Origin': `${process.env.FRONTEND_URL}`,
 				Authorization: `Bearer ${token}`,
 			},
 		};

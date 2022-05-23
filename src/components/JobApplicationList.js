@@ -28,7 +28,7 @@ const JobApplicationList = () => {
 			url: `${process.env.REACT_APP_SERVER_URL}/user`,
 			method: 'post',
 			headers: {
-				'Access-Control-Allow-Origin': '*',
+				'Access-Control-Allow-Origin': `${process.env.FRONTEND_URL}`,
 				Authorization: `Bearer ${token}`,
 			},
 			data: {
