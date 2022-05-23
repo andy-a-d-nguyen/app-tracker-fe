@@ -2,7 +2,7 @@ import React from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/NavBar';
+import Navbar from 'react-bootstrap/Navbar';
 import { Link } from 'react-router-dom';
 import LoginButton from './LoginButton.js';
 import LogoutButton from './LogoutButton.js';
