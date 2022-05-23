@@ -41,6 +41,7 @@ const EditJobApplicationForm = (props) => {
 			url: `${process.env.REACT_APP_SERVER_URL}/user/${props.userFromDB.username}/jobs/${props.index}`,
 			method: 'put',
 			headers: {
+				'Access-Control-Allow-Origin': '*',
 				Authorization: `Bearer ${token}`,
 			},
 			data: {

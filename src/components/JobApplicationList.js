@@ -28,6 +28,7 @@ const JobApplicationList = () => {
 			url: `${process.env.REACT_APP_SERVER_URL}/user`,
 			method: 'post',
 			headers: {
+				'Access-Control-Allow-Origin': '*',
 				Authorization: `Bearer ${token}`,
 			},
 			data: {
@@ -72,18 +73,21 @@ const JobApplicationList = () => {
 						setUserFromDB={setUserFromDB}
 					/>
 					<Accordion>
-						{Object.keys(userFromDB).length > 0 &&
-							userFromDB.jobsApplied.map((jobApplied, index) => {
-								return (
-									<JobApplication
-										key={index}
-										index={index}
-										jobApplied={jobApplied}
-										userFromDB={userFromDB}
-										setUserFromDB={setUserFromDB}
-									/>
-								);
-							})}
+						{Object.keys(userFromDB).length > 0
+							? userFromDB.jobsApplied.map(
+									(jobApplied, index) => {
+										return (
+											<JobApplication
+												key={index}
+												index={index}
+												jobApplied={jobApplied}
+												userFromDB={userFromDB}
+												setUserFromDB={setUserFromDB}
+											/>
+										);
+									}
+							  )
+							: null}
 					</Accordion>
 				</Stack>
 			</ListGroup>

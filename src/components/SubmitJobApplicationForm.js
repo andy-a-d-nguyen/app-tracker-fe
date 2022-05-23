@@ -46,6 +46,7 @@ const SubmitJobApplicationForm = (props) => {
 			url: `${process.env.REACT_APP_SERVER_URL}/user/${props.userFromDB.username}/jobs`,
 			method: 'post',
 			headers: {
+				'Access-Control-Allow-Origin': '*',
 				Authorization: `Bearer ${token}`,
 			},
 			data: {

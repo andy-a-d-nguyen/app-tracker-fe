@@ -17,6 +17,7 @@ const AboutUs = () => {
 			url: `${process.env.REACT_APP_SERVER_URL}/user`,
 			method: 'get',
 			headers: {
+				'Access-Control-Allow-Origin': '*',
 				Authorization: `Bearer ${token}`,
 			},
 		};
